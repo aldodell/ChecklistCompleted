@@ -1,0 +1,11 @@
+/* 
+  Localizable.strings
+  ChecklistCompleted
+
+  Created by Aldo Dell Uomini on 16/5/21.
+  
+*/
+"go" = "Go!";
+"select aircraft" = "Select aircraft";
+"current aircraft" = "Current aircraft:";
+"intro" = "Welcome to the definitive app for checklists. This is a project in continuous development. Our goal is to offer the most extensive database of aviation checklists";
