@@ -8,13 +8,23 @@
 import SwiftUI
 
 struct AircraftSelectorView : View {
+    
+    @State var value : String = ""
+    var list = ["a","b","c"]
+    
+    
     var body: some View {
         
-        Text("x")
+        VStack() {
+            HStack() {
+                Image(systemName: "magnifyingglass").foregroundColor(/*@START_MENU_TOKEN@*/.blue/*@END_MENU_TOKEN@*/)
+                TextField("Search", text: $value)
+            }
             .padding()
-            .background(Color.yellow)
-            .textFieldStyle(RoundedBorderTextFieldStyle())
-           
+            Spacer()
+            List() {}
+        }
+        
     }
     
 }
@@ -23,5 +33,9 @@ struct AircraftSelectorView : View {
 struct AircraftSelectorView_Previews: PreviewProvider {
     static var previews: some View {
         AircraftSelectorView()
+        
+       
+        
+        
     }
 }
