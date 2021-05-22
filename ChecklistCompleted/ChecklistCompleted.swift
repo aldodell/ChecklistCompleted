@@ -10,7 +10,8 @@ import Foundation
 
 
 /* Wrap a group of checklists. Represent a single aircraft model checklist*/
-struct ChecklistCompleted {
+struct ChecklistCompleted : Identifiable {
+    var id = UUID()
     var icao = "XXXX"
     var model = ""
     var information = ""
@@ -23,6 +24,15 @@ struct ChecklistCompleted {
                 t = "\(t)\(information)"
             }
             return t.trimmingCharacters(in: .whitespacesAndNewlines)
+        }
+        
+        set(value) {
+            var fragments = value.components(separatedBy: "/")
+            icao = fragments[0]
+            if(fragments.count > 1 ) {model = fragments[1]}
+            if(fragments.count > 2 ) {information = fragments[2]}
+            
+            
         }
     }
     

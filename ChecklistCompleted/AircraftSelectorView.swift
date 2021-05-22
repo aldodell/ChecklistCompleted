@@ -9,8 +9,27 @@ import SwiftUI
 
 struct AircraftSelectorView : View {
     
-    @State var value : String = ""
-    var list = ["a","b","c"]
+    @State var finding : String = ""
+    var checklistCompletedList : [ChecklistCompleted] = []
+    
+    
+    init() {
+        let paths = Bundle.main.paths(forResourcesOfType: "checklist", inDirectory: nil)
+        let proc = ChecklistProcessor()
+        
+        for path in paths {
+            let results = proc.parseIdentifier(path: path)
+            for result in results {
+                var cl = ChecklistCompleted()
+                cl.identifier = result
+                checklistCompletedList.append(cl)
+            }
+        }
+        
+        
+        checklistCompletedList.sort(by: {$0.identifier < $1.identifier})
+    }
+    
     
     
     var body: some View {
@@ -18,11 +37,13 @@ struct AircraftSelectorView : View {
         VStack() {
             HStack() {
                 Image(systemName: "magnifyingglass").foregroundColor(/*@START_MENU_TOKEN@*/.blue/*@END_MENU_TOKEN@*/)
-                TextField("Search", text: $value)
+                TextField("Search", text: $finding)
             }
             .padding()
             Spacer()
-            List() {}
+            List(checklistCompletedList) { checklistCompleted in
+                AircraftRow(name: checklistCompleted.identifier)
+            }
         }
         
     }
@@ -32,10 +53,8 @@ struct AircraftSelectorView : View {
 
 struct AircraftSelectorView_Previews: PreviewProvider {
     static var previews: some View {
+        
         AircraftSelectorView()
-        
-       
-        
         
     }
 }
