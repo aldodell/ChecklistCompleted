@@ -9,12 +9,12 @@ import SwiftUI
 
 struct ChecklistRowView: View {
     
-    @State var statement : String
-    @State var instruction: String
+    @State var instruction : String = "Master switch"
+    @State var collation: String = "On, then off for 10 seconds and return on"
     
     var body: some View {
         HStack (alignment: .top) {
-            Text("Master switch")
+            Text(instruction)
                 .frame(maxWidth:200, alignment:.leading)
                 .padding()
             
@@ -23,7 +23,7 @@ struct ChecklistRowView: View {
                 .padding()
                
            
-            Text("On, then off for 10 seconds and return on")
+            Text(collation)
                 .frame(maxWidth:200, alignment:.leading)
                 .padding()
             
