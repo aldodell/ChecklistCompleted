@@ -27,7 +27,7 @@ struct ChecklistCompleted : Identifiable {
         }
         
         set(value) {
-            var fragments = value.components(separatedBy: "/")
+            let fragments = value.components(separatedBy: "/")
             icao = fragments[0]
             if(fragments.count > 1 ) {model = fragments[1]}
             if(fragments.count > 2 ) {information = fragments[2]}

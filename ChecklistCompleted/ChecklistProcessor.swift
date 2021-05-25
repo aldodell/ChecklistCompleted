@@ -33,14 +33,13 @@ class ChecklistProcessor
         "<":">",
         "(":")",
         "#":"#",
+        "-":"-"
     ]
     
     
     func parseIdentifier(path : String) -> Array<String> {
         
-        
         let code = try! String.init(contentsOfFile: path)
-        
         
         var result = Array<String>()
         
@@ -51,7 +50,7 @@ class ChecklistProcessor
             
             //Si el primer caracter está contenido en nuestro diccionario entonces proesamos
             if(openTag == "#") {
-                var openTagPos = line.index(line.firstIndex(of: "#")!, offsetBy: 1)
+                let openTagPos = line.index(line.firstIndex(of: "#")!, offsetBy: 1)
                 let endTagPos = line.lastIndex(of: "#")!
                 let data = String(line[openTagPos..<endTagPos])
                 result.append(data)
@@ -60,6 +59,109 @@ class ChecklistProcessor
         }
         return result
     }
+    
+    
+    func parse(path : String) -> Array<ChecklistCompleted> {
+        
+        var result = [ChecklistCompleted]()
+        let code = try! String.init(contentsOfFile: path)
+        
+        var checklistCompleted : ChecklistCompleted? = nil
+        var checklist : Checklist? = nil
+        var step : Step? = nil
+        var data = ""
+        
+        //Dividimos el c'odigo en líneas
+        for  line in code.split(whereSeparator: \.isNewline) {
+            
+            if(!line.isEmpty) {
+                
+                //tomamos el primer caracter
+                let openTag = line.first
+                
+                //Si el primer caracter está contenido en nuestro diccionario entonces proesamos
+                if(tags.keys.contains(openTag!)) {
+                    
+                    let openTagPos = line.index(line.firstIndex(of: openTag!)!, offsetBy: 1)
+                    let endTagPos = line.lastIndex(of: tags[openTag!]!)
+                    if(endTagPos == nil) {
+                        data = String(line.dropFirst())
+                    } else {
+                        data = String(line[openTagPos..<endTagPos!])
+                    }
+                    
+                    switch openTag {
+                    
+                    case "#":
+                        
+                        if(checklistCompleted != nil) {
+                            result.append(checklistCompleted!)
+                        }
+                        checklistCompleted = ChecklistCompleted()
+                        checklistCompleted!.identifier = data
+                        
+                        
+                    case "[":
+                        if(checklist != nil) {
+                            checklistCompleted?.checklists.append(checklist!)
+                        }
+                        checklist = Checklist()
+                        checklist!.name = data
+                        checklist!.mode = Mode.Normal
+                        
+                        
+                    case "{":
+                        if(checklist != nil) {
+                            checklistCompleted?.checklists.append(checklist!)
+                        }
+                        
+                        checklist = Checklist()
+                        checklist!.name = data
+                        checklist!.mode = Mode.Emergency
+                        
+                        
+                    case "(":
+                        if(checklist != nil) {
+                            checklistCompleted?.checklists.append(checklist!)
+                        }
+                        checklist = Checklist()
+                        checklist!.name = data
+                        checklist!.mode = Mode.Info
+                        
+                        
+                    case "<":
+                        if(checklist != nil) {
+                            checklistCompleted?.checklists.append(checklist!)
+                        }
+                        checklist = Checklist()
+                        checklist!.name = data
+                        checklist!.mode = Mode.Abnormal
+                        
+                        
+                        
+                    case "-":
+                        step = Step()
+                        step!.isTabuled = true
+                        checklist?.steps.append(step!)
+                        
+                        
+                    default:
+                        step = Step()
+                        step!.isTabuled = false
+                        checklist?.steps.append(step!)
+                    }
+                    
+                    
+                }
+            }
+            
+        }
+        checklistCompleted?.checklists.append(checklist!)
+        result.append(checklistCompleted!)
+        return result
+    }
+    
+    
     
     
 }

@@ -10,6 +10,7 @@ import SwiftUI
 struct ChecklistRowView: View {
     
     @State var instruction : String = "Master switch"
+    
     @State var collation: String = "On, then off for 10 seconds and return on"
     
     var body: some View {

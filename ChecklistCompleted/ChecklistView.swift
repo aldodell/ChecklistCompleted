@@ -31,13 +31,13 @@ struct ChecklistView: View {
                 Button("EMERGENCY"){}
                     .body.background(Color.red)
                     .buttonStyle(MyButtonStyle())
-                    
-            
+                
+                
                 Button("ABNORNAL"){}
                     .body.background(Color.yellow)
                     .buttonStyle(MyButtonStyle())
             }
-           Spacer()
+            Spacer()
             
             HStack {
                 Button("NORMAL"){}
@@ -46,8 +46,9 @@ struct ChecklistView: View {
                     .body.background(Color.blue)
                     .buttonStyle(MyButtonStyle())
             }
-            
-            List() {}
+            ScrollView {
+                List() {}
+            }
             
         }
     }

@@ -8,12 +8,15 @@
 import SwiftUI
 
 struct AircraftSelectorView : View {
-    
     @State var finding : String = ""
+    @ObservedObject var dataShared : DataShared
     var checklistCompletedList : [ChecklistCompleted] = []
     
     
-    init() {
+    init(dataShared data: DataShared) {
+        
+        self.dataShared = dataShared
+        
         let paths = Bundle.main.paths(forResourcesOfType: "checklist", inDirectory: nil)
         let proc = ChecklistProcessor()
         
@@ -42,8 +45,10 @@ struct AircraftSelectorView : View {
             .padding()
             Spacer()
             List(checklistCompletedList) { checklistCompleted in
-                AircraftRow(name: checklistCompleted.identifier)
+                AircraftRow(name: checklistCompleted.identifier, dataShared: dataShared)
             }
+            Spacer()
+            Text("Selected: \(dataShared.selectedAircraft)")
         }
         
     }
@@ -53,8 +58,6 @@ struct AircraftSelectorView : View {
 
 struct AircraftSelectorView_Previews: PreviewProvider {
     static var previews: some View {
-        
         AircraftSelectorView()
-        
     }
 }

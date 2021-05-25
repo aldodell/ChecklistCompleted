@@ -8,9 +8,18 @@
 import SwiftUI
 
 struct AircraftRow  : View {
-    var name : String
+    var name : String = ""
+    @ObservedObject var dataShared : DataShared
+    
     
     var body : some View {
-        Text(name)
+        Button(name) {
+            dataShared.selectedAircraft = name
+        }.padding()
+        
     }
+    
+
 }
+
+
