@@ -2,40 +2,23 @@
 //  ChecklistRowView.swift
 //  ChecklistCompleted
 //
-//  Created by Aldo Dell Uomini on 22/5/21.
+//  Created by Aldo Dell Uomini on 25/5/21.
 //
 
 import SwiftUI
 
 struct ChecklistRowView: View {
-    
-    @State var instruction : String = "Master switch"
-    
-    @State var collation: String = "On, then off for 10 seconds and return on"
-    
+    @State var dataShared : DataShared
+    var checklist: Checklist
     var body: some View {
-        HStack (alignment: .top) {
-            Text(instruction)
-                .frame(maxWidth:200, alignment:.leading)
-                .padding()
-            
-            Text("............")
-                .frame(alignment:.center)
-                .padding()
-               
-           
-            Text(collation)
-                .frame(maxWidth:200, alignment:.leading)
-                .padding()
-            
+        NavigationLink (destination: ChecklistView(dataShared: dataShared, checklistCompleted: ChecklistCompleted(), checklist: checklist)) {
+            Text(checklist.name)
         }
-        .background(Color.gray)
-        
     }
 }
 
 struct ChecklistRowView_Previews: PreviewProvider {
     static var previews: some View {
-        ChecklistRowView()
+        ChecklistRowView(dataShared: DataShared(), checklist: Checklist())
     }
 }

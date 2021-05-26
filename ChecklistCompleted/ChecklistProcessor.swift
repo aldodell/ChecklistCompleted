@@ -81,81 +81,95 @@ class ChecklistProcessor
                 
                 //Si el primer caracter está contenido en nuestro diccionario entonces proesamos
                 if(tags.keys.contains(openTag!)) {
-                    
                     let openTagPos = line.index(line.firstIndex(of: openTag!)!, offsetBy: 1)
                     let endTagPos = line.lastIndex(of: tags[openTag!]!)
-                    if(endTagPos == nil) {
+                    if(endTagPos == nil || endTagPos! < openTagPos) {
                         data = String(line.dropFirst())
                     } else {
                         data = String(line[openTagPos..<endTagPos!])
                     }
+                } else {
+                    data = String(line)
+                }
+                
+                
+                
+                switch openTag {
+                
+                case "#":
                     
-                    switch openTag {
+                    if(checklistCompleted != nil) {
+                        result.append(checklistCompleted!)
+                    }
+                    checklistCompleted = ChecklistCompleted()
+                    checklistCompleted!.identifier = data
                     
-                    case "#":
-                        
-                        if(checklistCompleted != nil) {
-                            result.append(checklistCompleted!)
-                        }
-                        checklistCompleted = ChecklistCompleted()
-                        checklistCompleted!.identifier = data
-                        
-                        
-                    case "[":
-                        if(checklist != nil) {
-                            checklistCompleted?.checklists.append(checklist!)
-                        }
-                        checklist = Checklist()
-                        checklist!.name = data
-                        checklist!.mode = Mode.Normal
-                        
-                        
-                    case "{":
-                        if(checklist != nil) {
-                            checklistCompleted?.checklists.append(checklist!)
-                        }
-                        
-                        checklist = Checklist()
-                        checklist!.name = data
-                        checklist!.mode = Mode.Emergency
-                        
-                        
-                    case "(":
-                        if(checklist != nil) {
-                            checklistCompleted?.checklists.append(checklist!)
-                        }
-                        checklist = Checklist()
-                        checklist!.name = data
-                        checklist!.mode = Mode.Info
-                        
-                        
-                    case "<":
-                        if(checklist != nil) {
-                            checklistCompleted?.checklists.append(checklist!)
-                        }
-                        checklist = Checklist()
-                        checklist!.name = data
-                        checklist!.mode = Mode.Abnormal
-                        
-                        
-                        
-                    case "-":
-                        step = Step()
-                        step!.isTabuled = true
-                        checklist?.steps.append(step!)
-                        
-                        
-                    default:
-                        step = Step()
-                        step!.isTabuled = false
-                        checklist?.steps.append(step!)
+                    
+                case "[":
+                    if(checklist != nil) {
+                        checklistCompleted?.checklists.append(checklist!)
+                    }
+                    checklist = Checklist()
+                    checklist!.name = data
+                    checklist!.mode = Mode.Normal
+                    
+                    
+                case "{":
+                    if(checklist != nil) {
+                        checklistCompleted?.checklists.append(checklist!)
                     }
                     
+                    checklist = Checklist()
+                    checklist!.name = data
+                    checklist!.mode = Mode.Emergency
                     
+                    
+                case "(":
+                    if(checklist != nil) {
+                        checklistCompleted?.checklists.append(checklist!)
+                    }
+                    checklist = Checklist()
+                    checklist!.name = data
+                    checklist!.mode = Mode.Info
+                    
+                    
+                case "<":
+                    if(checklist != nil) {
+                        checklistCompleted?.checklists.append(checklist!)
+                    }
+                    checklist = Checklist()
+                    checklist!.name = data
+                    checklist!.mode = Mode.Abnormal
+                    
+                    
+                    
+                case "-":
+                    let fragments = data.components(separatedBy: "...")
+                    step = Step()
+                    step?.instruction = fragments[0]
+                    if(fragments.count>1) {
+                        step?.collation = fragments[1]
+                    }
+                    step!.isTabuled = true
+                    checklist?.steps.append(step!)
+                    
+                    
+                default:
+                    let fragments = data.components(separatedBy: "...")
+                    step = Step()
+                    step?.instruction = fragments[0]
+                    if(fragments.count>1) {
+                        step?.collation = fragments[1]
+                    }
+                    step!.isTabuled = false
+                    checklist?.steps.append(step!)
                 }
+                
+                
             }
-            
         }
+        
+        
         checklistCompleted?.checklists.append(checklist!)
         result.append(checklistCompleted!)
         return result

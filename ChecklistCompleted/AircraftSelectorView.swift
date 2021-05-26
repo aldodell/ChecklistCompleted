@@ -11,11 +11,10 @@ struct AircraftSelectorView : View {
     @State var finding : String = ""
     @ObservedObject var dataShared : DataShared
     var checklistCompletedList : [ChecklistCompleted] = []
+    var selectedAircraft = ""
     
-    
-    init(dataShared data: DataShared) {
-        
-        self.dataShared = dataShared
+    init (_ ds : DataShared){
+        dataShared = ds
         
         let paths = Bundle.main.paths(forResourcesOfType: "checklist", inDirectory: nil)
         let proc = ChecklistProcessor()
@@ -36,6 +35,7 @@ struct AircraftSelectorView : View {
     
     
     var body: some View {
+        
         
         VStack() {
             HStack() {
@@ -58,6 +58,6 @@ struct AircraftSelectorView : View {
 
 struct AircraftSelectorView_Previews: PreviewProvider {
     static var previews: some View {
-        AircraftSelectorView()
+        AircraftSelectorView(DataShared())
     }
 }

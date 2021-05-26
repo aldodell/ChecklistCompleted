@@ -15,6 +15,9 @@ struct AircraftRow  : View {
     var body : some View {
         Button(name) {
             dataShared.selectedAircraft = name
+            UserDefaults.standard.setValue(name, forKey: "selectedAircraft")
+            UserDefaults.standard.synchronize()
+                
         }.padding()
         
     }

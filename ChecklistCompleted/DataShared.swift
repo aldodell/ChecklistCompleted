@@ -7,5 +7,5 @@
 
 import Foundation
 class DataShared : ObservableObject {
-    @Published   var selectedAircraft : String = ""
+    @Published var selectedAircraft : String = ""
 }

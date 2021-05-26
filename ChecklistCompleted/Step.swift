@@ -8,7 +8,8 @@
 import Foundation
 
 /** Each single instruction of a checklist */
-struct Step {
+struct Step : Identifiable {
+    var id = UUID()
     var instruction: String = ""
     var collation: String = ""
     var isTabuled: Bool = false

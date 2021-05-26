@@ -10,7 +10,8 @@ import Foundation
 /**
  * Wrap steps and mode. It's a simple section of a whole checklist.
  */
-struct Checklist {
+struct Checklist : Identifiable {
+    var id = UUID()
     var name: String = ""
     var steps = [Step]()
     var mode : Mode = .Unknown

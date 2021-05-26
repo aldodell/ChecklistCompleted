@@ -21,7 +21,7 @@ struct ChecklistCompleted : Identifiable {
         get {
             var t : String = "\(icao)/\(model)"
             if(!information.isEmpty){
-                t = "\(t)\(information)"
+                t = "\(t)/\(information)"
             }
             return t.trimmingCharacters(in: .whitespacesAndNewlines)
         }
